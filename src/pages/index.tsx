@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Header from "../components/Header";
 import { GetStaticProps } from 'next';
 
-import { getPostsData } from "../../lib/posts";
+import { getPostsData } from "src/lib/posts";
 
 export default function Home({allPostsData}) {
   console.log(allPostsData);
