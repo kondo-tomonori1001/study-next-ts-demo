@@ -2,20 +2,26 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-type Posts = {
+/* 
+markdownを格納しているposts_dataディレクトリの取得
+process.cwd()はNode.jsの構文でNodeが実行されているディレクトリを取得できる
+__dirnameでもカレントディレクトリを取得できる
+const RootDirectory:string = __dirname;
+console.log(RootDirectory);
+*/
+
+const postsDirectory :string = path.join(process.cwd(),"posts_data");
+
+type Post = {
   id:string
   title:string
   date:string
 }
 
+// トップページ表示
 export const getPostsData = () => {
 
-  // markdownを格納しているposts_dataディレクトリの取得
-  // process.cwd()はNode.jsの構文でNodeが実行されているディレクトリを取得できる
-  const postsDirectory :string = path.join(process.cwd(),"posts_data");
-  // __dirnameでもカレントディレクトリを取得できる
-  // const RootDirectory:string = __dirname;
-  // console.log(RootDirectory);
+  
 
   // ========================================
 
@@ -28,21 +34,78 @@ export const getPostsData = () => {
     const fullPath = path.join(postsDirectory, filename)
     const fileContents = fs.readFileSync(fullPath, 'utf8')
     // 投稿のメタデータ部分を解析するために gray-matter を使う
+
+    /*
+      matterResultは次のようなデータが格納
+      {
+        content:本文
+        data:{
+          title:"タイトル",
+          date:"日付",
+        }
+      }
+    */
     const matterResult = matter(fileContents)
     console.log(matterResult);
-    // データを id と合わせる
+
+    /*
+      データを id と合わせて次のような形式のデータに
+      {
+        id:"id",
+        title:"タイトル",
+        date:"日付"
+      }
+    */
     return {
       id,
       // スプレッド構文で展開
       ...matterResult.data
-    } as Posts
+    } as Post
   })
+
   return allPostsData
-  // .sort((a, b) => {
-  //   if (a.date < b.date) {
-  //     return 1
-  //   } else {
-  //     return -1
-  //   }
-  // })
+  .sort((a, b) => {
+    if (a.date < b.date) {
+      return 1
+    } else {
+      return -1
+    }
+  })
+}
+
+// ブログ記事のデータ取得
+export const getPostData = (id:string) => {
+  const filePath = path.join(postsDirectory,`${id}.md`);
+  const fileContents = fs.readFileSync(filePath);
+
+  // gray-matterで解析
+  const matterResult = matter(fileContents);
+
+  return {
+    id,
+    ...matterResult.data
+  }
+}
+
+// ルーティング用パスの設定
+export const getAllPostIds = () => {
+  const fileNames = fs.readdirSync(postsDirectory);
+  return fileNames.map(fileName => {
+    /*
+    次のようなデータを返す
+      [
+        params:{
+          id:"fileName"
+        },
+        params:{
+          id:"fileName"
+        },
+      ]
+    */
+    return {
+      params:{
+        id:fileName.replace(/\.md$/,'')
+      }
+    }
+  })
 }

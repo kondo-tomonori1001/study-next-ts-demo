@@ -1,6 +1,5 @@
-import Head from 'next/Head';
 import Link from 'next/link';
-import Header from "../components/Header";
+import { MainLayout } from 'src/layouts/main/index'
 import { GetStaticProps } from 'next';
 
 import { getPostsData } from "src/lib/posts";
@@ -8,11 +7,7 @@ import { getPostsData } from "src/lib/posts";
 export default function Home({allPostsData}) {
   console.log(allPostsData);
   return (
-    <>
-      <Head>
-        <title>MyBlog</title>
-      </Head>
-      <Header />
+    <MainLayout home>
       <p>Hello world!</p>
       <Link href="/posts/first-post">link to first-post</Link>
       <Link href="/posts/style-demo/cssModules">CSS Modules Demo</Link>
@@ -28,7 +23,7 @@ export default function Home({allPostsData}) {
           </li>
         ))}
       </ul>
-    </>
+    </MainLayout>
   )
 }
 
