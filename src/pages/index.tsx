@@ -5,7 +5,6 @@ import { GetStaticProps } from 'next';
 import { getPostsData } from "src/lib/posts";
 
 export default function Home({allPostsData}) {
-  console.log(allPostsData);
   return (
     <MainLayout home>
       <p>Hello world!</p>
@@ -15,9 +14,7 @@ export default function Home({allPostsData}) {
       <ul>
         {allPostsData.map(({ id, date, title }) => (
           <li key={id}>
-            {title}
-            <br />
-            {id}
+            <Link href={`/posts/${id}`}>{title}</Link>
             <br />
             {date}
           </li>

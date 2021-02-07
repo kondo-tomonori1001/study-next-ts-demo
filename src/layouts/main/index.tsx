@@ -5,13 +5,14 @@ import Header from '../../components/Header';
 type Props = {
   children:React.ReactNode,
   home?:boolean,
+  page?:string
 }
 
-export const MainLayout:React.FC<Props> = ({children,home}):JSX.Element => {
+export const MainLayout:React.FC<Props> = ({children,home,page}):JSX.Element => {
   return(
     <>
       <Head>
-        <title>MyBlog</title>
+        <title>MyBlog{!home ? (` | ${page}`):""}</title>
       </Head>
       <Header />
       <main>{children}</main>

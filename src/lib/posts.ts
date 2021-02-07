@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import remark from 'remark';
+import html from 'remark-html';
 
 /* 
 markdownを格納しているposts_dataディレクトリの取得
@@ -74,15 +76,22 @@ export const getPostsData = () => {
 }
 
 // ブログ記事のデータ取得
-export const getPostData = (id:string) => {
+export const getPostData = async (id:string) => {
   const filePath = path.join(postsDirectory,`${id}.md`);
   const fileContents = fs.readFileSync(filePath);
 
   // gray-matterで解析
   const matterResult = matter(fileContents);
 
+  // マークダウンを HTML 文字列に変換するために remark を使う
+  const processedContent = await remark()
+    .use(html)
+    .process(matterResult.content)
+  const contentHtml = processedContent.toString()
+
   return {
     id,
+    contentHtml,
     ...matterResult.data
   }
 }
