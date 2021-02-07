@@ -48,7 +48,6 @@ export const getPostsData = () => {
       }
     */
     const matterResult = matter(fileContents)
-    console.log(matterResult);
 
     /*
       データを id と合わせて次のような形式のデータに
