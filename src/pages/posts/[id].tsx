@@ -1,8 +1,16 @@
 import { MainLayout } from 'src/layouts/main/index'
 import { getAllPostIds,getPostData } from 'src/lib/posts';
 
+type Props = {
+  postData: {
+    id:string;
+    title: string;
+    date: string;
+    contentHtml: string;
+  }
+}
 
-export default function Post({ postData }) {
+export default function Post({ postData }:Props) {
   return (
       <MainLayout page={postData.id}>
         {postData.title}
