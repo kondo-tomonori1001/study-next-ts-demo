@@ -12,10 +12,10 @@ type Props = {
 
 export default function Post({ postData }:Props) {
   return (
-      <MainLayout page={postData.id}>
+      <MainLayout page={"title"}>
         {postData.title}
         <br />
-        {postData.id}
+        {/* {postData.id} */}
         <br />
         {postData.date}
         <br />
