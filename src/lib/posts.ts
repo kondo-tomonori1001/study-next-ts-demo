@@ -60,7 +60,7 @@ export const getPostsData = () => {
     return {
       id,
       // スプレッド構文で展開
-      ...matterResult.data
+      ...matterResult.data as { date: string; title: string }
     } as Post
   })
 
@@ -77,7 +77,7 @@ export const getPostsData = () => {
 // ブログ記事のデータ取得
 export const getPostData = async (id:string) => {
   const filePath = path.join(postsDirectory,`${id}.md`);
-  const fileContents = fs.readFileSync(filePath);
+  const fileContents = fs.readFileSync(filePath,'utf8');
 
   // gray-matterで解析
   const matterResult = matter(fileContents);
@@ -91,7 +91,7 @@ export const getPostData = async (id:string) => {
   return {
     id,
     contentHtml,
-    ...matterResult.data
+    ...matterResult.data as { date: string; title: string }
   }
 }
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MainLayout } from 'src/layouts/main/index'
+import { MainLayout } from 'src/layouts/main'
 import { GetStaticProps } from 'next';
 
 import { getPostsData } from "src/lib/posts";

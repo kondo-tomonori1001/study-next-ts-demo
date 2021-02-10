@@ -1,5 +1,6 @@
-import { MainLayout } from 'src/layouts/main/index'
+import { MainLayout } from 'src/layouts/main'
 import { getAllPostIds,getPostData } from 'src/lib/posts';
+import { GetStaticProps, GetStaticPaths } from 'next'
 
 type Props = {
   postData: {
@@ -12,10 +13,10 @@ type Props = {
 
 export default function Post({ postData }:Props) {
   return (
-      <MainLayout page={"title"}>
+      <MainLayout page={postData.id}>
         {postData.title}
         <br />
-        {/* {postData.id} */}
+        {postData.id}
         <br />
         {postData.date}
         <br />
@@ -24,17 +25,17 @@ export default function Post({ postData }:Props) {
     )
 }
 
-export async function getStaticPaths() {
-  const paths = getAllPostIds()
+export const getStaticPaths:GetStaticPaths = async () => {
+  const paths = getAllPostIds();
   return {
     paths,
-    fallback: true
+    fallback: false
   }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps:GetStaticProps = async ({ params }) => {
   // params.id を使用して、ブログの投稿に必要なデータを取得する
-  const postData = await getPostData(params.id)
+  const postData = await getPostData(params.id as string)
   return {
     props: {
       postData

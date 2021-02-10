@@ -12,7 +12,7 @@ export const MainLayout:React.FC<Props> = ({children,home,page}):JSX.Element => 
   return(
     <>
       <Head>
-        <title>MyBlog{!home ? (` | ${page}`):""}</title>
+        <title>{!home ? (`${page} | `):""}MyBlog</title>
       </Head>
       <Header />
       <main>{children}</main>
